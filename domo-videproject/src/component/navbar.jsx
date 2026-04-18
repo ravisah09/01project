@@ -1,31 +1,71 @@
-import React from "react";
+import { useState } from "react";
 
-function Navbar() {
+ function Navbar({ currentPage, setCurrentPage }) {
+  return <div>Navbar</div>;
+}
+
+  const links = ["Home", "About", "Contact"];
+
   return (
-    <nav className="fixed top-0 left-1/2 -translate-x-1/2 w-[90%] z-20 border-b bg-gray-900 text-white rounded-lg">
-  <div className="flex justify-between items-center px-6 py-4">
-
+    <nav className="bg-indigo-700 text-white shadow-lg">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-7"
-            alt="logo"
-          />
-          <span className="text-xl font-bold">Flowbite</span>
+        <div
+          className="text-2xl font-bold tracking-wide cursor-pointer"
+          onClick={() => setCurrentPage("Home")}
+        >
+          🌟 MyWebsite
         </div>
 
-        {/* Menu */}
-        <ul className="hidden md:flex space-x-6">
-          <li><a href="#" className="hover:text-blue-400">Home</a></li>
-          <li><a href="#" className="hover:text-blue-400">About</a></li>
-          <li><a href="#" className="hover:text-blue-400">Services</a></li>
-          <li><a href="#" className="hover:text-blue-400">Contact</a></li>
+        {/* Desktop Links */}
+        <ul className="hidden md:flex gap-8 text-lg font-medium">
+          {links.map((link) => (
+            <li key={link}>
+              <button
+                onClick={() => setCurrentPage(link)}
+                className={`hover:text-yellow-300 transition-colors duration-200 pb-1 ${
+                  currentPage === link
+                    ? "border-b-2 border-yellow-300 text-yellow-300"
+                    : ""
+                }`}
+              >
+                {link}
+              </button>
+            </li>
+          ))}
         </ul>
 
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden text-3xl focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-indigo-800 px-6 pb-4">
+          {links.map((link) => (
+            <button
+              key={link}
+              onClick={() => {
+                setCurrentPage(link);
+                setMenuOpen(false);
+              }}
+              className={`block w-full text-left py-3 text-lg border-b border-indigo-600 hover:text-yellow-300 transition-colors ${
+                currentPage === link ? "text-yellow-300 font-semibold" : ""
+              }`}
+            >
+              {link}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
-}
+
+
 
 export default Navbar;

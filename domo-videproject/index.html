@@ -1,13 +1,424 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>domo-videproject</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MyWebsite – React + Tailwind</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+/* ── NAVBAR ── */
+function Navbar({ currentPage, setCurrentPage }) {
+  const [open, setOpen] = useState(false);
+  const links = ["Home", "About", "Contact"];
+  return (
+    <nav className="bg-indigo-700 text-white shadow-lg">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="text-2xl font-bold cursor-pointer" onClick={() => setCurrentPage("Home")}>
+          🌟 MyWebsite
+        </div>
+        <ul className="hidden md:flex gap-8 text-lg font-medium">
+          {links.map(l => (
+            <li key={l}>
+              <button onClick={() => setCurrentPage(l)}
+                className={`hover:text-yellow-300 transition-colors pb-1 ${currentPage===l?"border-b-2 border-yellow-300 text-yellow-300":""}`}>
+                {l}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>{open?"✕":"☰"}</button>
+      </div>
+      {open && (
+        <div className="md:hidden bg-indigo-800 px-6 pb-4">
+          {links.map(l => (
+            <button key={l} onClick={() => { setCurrentPage(l); setOpen(false); }}
+              className={`block w-full text-left py-3 text-base border-b border-indigo-600 hover:text-yellow-300 ${currentPage===l?"text-yellow-300 font-semibold":""}`}>
+              {l}
+            </button>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+/* ── FOOTER ── */
+function Footer() {
+  return (
+    <footer className="bg-gray-900 text-gray-300 py-10 mt-16">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 className="text-white text-xl font-bold mb-2">🌟 MyWebsite</h3>
+          <p className="text-sm">A beginner-friendly website built with React and Tailwind CSS.</p>
+        </div>
+        <div>
+          <h4 className="text-white font-semibold mb-3">Quick Links</h4>
+          <ul className="space-y-1 text-sm">
+            <li>🏠 Home</li><li>👤 About</li><li>📬 Contact</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-semibold mb-3">Contact</h4>
+          <ul className="space-y-1 text-sm">
+            <li>📧 hello@mywebsite.com</li>
+            <li>📞 +91 98765 43210</li>
+            <li>📍 New Delhi, India</li>
+          </ul>
+        </div>
+      </div>
+      <div className="text-center text-sm text-gray-500 mt-10 border-t border-gray-700 pt-6">
+        © {new Date().getFullYear()} MyWebsite. Built with ❤️ using React + Tailwind CSS.
+      </div>
+    </footer>
+  );
+}
+
+/* ── HOME PAGE ── */
+function Home({ setCurrentPage }) {
+  const features = [
+    { icon:"⚡", title:"Fast & Modern", desc:"Built with React for a smooth experience." },
+    { icon:"🎨", title:"Beautiful Design", desc:"Styled with Tailwind CSS for a clean look." },
+    { icon:"📱", title:"Mobile Friendly", desc:"Looks great on all screen sizes." },
+  ];
+  const testimonials = [
+    { name:"Priya Sharma", role:"Student", text:"This website taught me so much about React and Tailwind!" },
+    { name:"Rahul Verma", role:"Developer", text:"Clean code and great structure. A perfect starter template." },
+    { name:"Anjali Singh", role:"Designer", text:"Love the simple and beautiful design choices here." },
+  ];
+  return (
+    <div>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-24 px-6 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+          Welcome to <span className="text-yellow-300">MyWebsite</span> 🚀
+        </h1>
+        <p className="text-lg text-indigo-100 max-w-2xl mx-auto mb-8">
+          A beginner-friendly website built with React JS and Tailwind CSS. Clean, simple, and ready to learn from!
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button onClick={() => setCurrentPage("About")}
+            className="bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold px-8 py-3 rounded-full transition-all shadow-md">
+            Learn About Us
+          </button>
+          <button onClick={() => setCurrentPage("Contact")}
+            className="border-2 border-white hover:bg-white hover:text-indigo-700 font-semibold px-8 py-3 rounded-full transition-all">
+            Contact Us
+          </button>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-16 px-6 bg-gray-50">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Why Choose Us?</h2>
+          <p className="text-gray-500 mb-10">Here's what makes this website special</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((f,i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-md p-8 hover:shadow-xl transition-shadow border border-gray-100">
+                <div className="text-5xl mb-4">{f.icon}</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{f.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="bg-indigo-700 text-white py-14 px-6">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[{number:"100+",label:"Projects Done"},{number:"50+",label:"Happy Clients"},{number:"5★",label:"Average Rating"},{number:"3",label:"Years Experience"}].map((s,i) => (
+            <div key={i}>
+              <div className="text-4xl font-extrabold text-yellow-300">{s.number}</div>
+              <div className="text-indigo-200 mt-1 text-sm">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 px-6 bg-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">What People Say</h2>
+          <p className="text-gray-500 mb-10">Testimonials from our happy users</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((t,i) => (
+              <div key={i} className="bg-indigo-50 rounded-2xl p-6 text-left border border-indigo-100">
+                <p className="text-gray-700 mb-4 italic">"{t.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">{t.name[0]}</div>
+                  <div>
+                    <p className="font-semibold text-gray-800 text-sm">{t.name}</p>
+                    <p className="text-gray-400 text-xs">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-yellow-400 py-14 px-6 text-center">
+        <h2 className="text-3xl font-extrabold text-gray-900 mb-3">Ready to Connect?</h2>
+        <p className="text-gray-700 mb-6">Reach out to us — we'd love to hear from you!</p>
+        <button onClick={() => setCurrentPage("Contact")}
+          className="bg-gray-900 hover:bg-gray-700 text-white font-semibold px-10 py-3 rounded-full transition-all">
+          Get In Touch →
+        </button>
+      </section>
+    </div>
+  );
+}
+
+/* ── ABOUT PAGE ── */
+function About() {
+  const team = [
+    { name:"Arjun Mehta", role:"Founder & Developer", emoji:"👨‍💻" },
+    { name:"Sneha Kapoor", role:"UI/UX Designer", emoji:"👩‍🎨" },
+    { name:"Vikram Nair", role:"Content Writer", emoji:"✍️" },
+  ];
+  const skills = [
+    { name:"React JS", percent:90 },
+    { name:"Tailwind CSS", percent:85 },
+    { name:"JavaScript", percent:80 },
+    { name:"HTML & CSS", percent:95 },
+  ];
+  return (
+    <div>
+      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-20 px-6 text-center">
+        <h1 className="text-4xl font-extrabold mb-3">About Us 👤</h1>
+        <p className="text-indigo-200 text-lg max-w-xl mx-auto">Learn who we are, what we do, and why we love building for the web.</p>
+      </section>
+
+      {/* Story */}
+      <section className="py-16 px-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Story</h2>
+            <p className="text-gray-600 leading-relaxed mb-4">We started MyWebsite as a learning project to help beginners understand how to build modern web applications using React and Tailwind CSS.</p>
+            <p className="text-gray-600 leading-relaxed mb-4">Our goal is simple — make web development approachable, fun, and creative for everyone, whether you're just starting out or looking to level up.</p>
+            <p className="text-gray-600 leading-relaxed">Every line of code is written with clarity and simplicity in mind, so you can learn just by reading it.</p>
+          </div>
+          <div className="bg-indigo-50 rounded-2xl p-8 text-center border border-indigo-100">
+            <div className="text-7xl mb-4">🧑‍🚀</div>
+            <h3 className="text-xl font-bold text-indigo-700 mb-2">Building the Future</h3>
+            <p className="text-gray-500 text-sm">One React component at a time, we're making the web a better place.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section className="py-14 px-6 bg-gray-50">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Our Skills</h2>
+          <p className="text-center text-gray-500 mb-10">Technologies we love working with</p>
+          <div className="space-y-6">
+            {skills.map((s,i) => (
+              <div key={i}>
+                <div className="flex justify-between mb-1">
+                  <span className="text-gray-700 font-medium">{s.name}</span>
+                  <span className="text-indigo-600 font-semibold">{s.percent}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-indigo-600 h-3 rounded-full" style={{width:`${s.percent}%`}}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="py-16 px-6 bg-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Meet the Team</h2>
+          <p className="text-gray-500 mb-10">The people behind the project</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {team.map((m,i) => (
+              <div key={i} className="bg-white border border-gray-100 rounded-2xl shadow-md p-8 hover:shadow-xl transition-shadow">
+                <div className="text-6xl mb-4">{m.emoji}</div>
+                <h3 className="text-lg font-bold text-gray-800">{m.name}</h3>
+                <p className="text-indigo-500 text-sm mt-1">{m.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-14 px-6 bg-indigo-700 text-white text-center">
+        <h2 className="text-3xl font-bold mb-8">Our Core Values</h2>
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[{icon:"💡",title:"Innovation",desc:"Always trying new things and finding better ways."},{icon:"🤝",title:"Community",desc:"We believe in helping others learn and grow together."},{icon:"🎯",title:"Quality",desc:"Every project is done with care and attention to detail."}].map((v,i) => (
+            <div key={i} className="bg-indigo-600 rounded-2xl p-6">
+              <div className="text-4xl mb-3">{v.icon}</div>
+              <h3 className="font-bold text-lg mb-2">{v.title}</h3>
+              <p className="text-indigo-200 text-sm">{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ── CONTACT PAGE ── */
+function Contact() {
+  const [form, setForm] = useState({ name:"", email:"", subject:"", message:"" });
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = "Name is required.";
+    if (!form.email.trim()) e.email = "Email is required.";
+    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = "Enter a valid email.";
+    if (!form.message.trim()) e.message = "Message is required.";
+    return e;
+  };
+
+  const handleChange = e => {
+    setForm({...form, [e.target.name]: e.target.value});
+    setErrors({...errors, [e.target.name]: ""});
+  };
+
+  const handleSubmit = () => {
+    const v = validate();
+    if (Object.keys(v).length > 0) setErrors(v);
+    else setSubmitted(true);
+  };
+
+  const contactInfo = [
+    {icon:"📧",label:"Email",value:"hello@mywebsite.com"},
+    {icon:"📞",label:"Phone",value:"+91 98765 43210"},
+    {icon:"📍",label:"Location",value:"New Delhi, India"},
+    {icon:"🕐",label:"Hours",value:"Mon–Fri, 9AM–6PM"},
+  ];
+
+  return (
+    <div>
+      <section className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-20 px-6 text-center">
+        <h1 className="text-4xl font-extrabold mb-3">Contact Us 📬</h1>
+        <p className="text-teal-100 text-lg max-w-xl mx-auto">Have a question or want to work together? We'd love to hear from you!</p>
+      </section>
+
+      <section className="py-12 px-6 bg-gray-50">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          {contactInfo.map((c,i) => (
+            <div key={i} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center hover:shadow-md transition-shadow">
+              <div className="text-4xl mb-2">{c.icon}</div>
+              <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">{c.label}</p>
+              <p className="text-gray-700 text-sm font-medium">{c.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-16 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+            {submitted ? (
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+                <div className="text-5xl mb-4">✅</div>
+                <h3 className="text-xl font-bold text-green-700 mb-2">Message Sent!</h3>
+                <p className="text-green-600 mb-4">Thank you, <strong>{form.name}</strong>! We'll get back to you shortly.</p>
+                <button onClick={() => { setSubmitted(false); setForm({name:"",email:"",subject:"",message:""}); }}
+                  className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-full text-sm transition-colors">
+                  Send Another
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name <span className="text-red-500">*</span></label>
+                  <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Enter your name"
+                    className={`w-full border rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400 ${errors.name?"border-red-400 bg-red-50":"border-gray-200"}`} />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address <span className="text-red-500">*</span></label>
+                  <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="your@email.com"
+                    className={`w-full border rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400 ${errors.email?"border-red-400 bg-red-50":"border-gray-200"}`} />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                  <input type="text" name="subject" value={form.subject} onChange={handleChange} placeholder="What's this about?"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Message <span className="text-red-500">*</span></label>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={5} placeholder="Write your message here..."
+                    className={`w-full border rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none ${errors.message?"border-red-400 bg-red-50":"border-gray-200"}`} />
+                  {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+                </div>
+                <button onClick={handleSubmit}
+                  className="w-full bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 rounded-xl transition-colors shadow-md">
+                  Send Message 🚀
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <div className="bg-teal-50 rounded-2xl p-8 border border-teal-100">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Why Reach Out?</h3>
+              <ul className="space-y-3 text-gray-600 text-sm">
+                {["🤔 Have a question about our website?","💼 Want to collaborate on a project?","🐞 Found a bug or issue? Let us know!","📚 Need help learning React or Tailwind?","🌟 Just want to say hi? We'd love that!"].map((item,i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-indigo-600 text-white rounded-2xl p-8">
+              <h3 className="text-xl font-bold mb-2">Follow Us</h3>
+              <p className="text-indigo-200 text-sm mb-4">Stay connected with us online</p>
+              <div className="flex gap-3 flex-wrap">
+                {["🐦 Twitter","💼 LinkedIn","🐙 GitHub","📸 Instagram"].map((s,i) => (
+                  <span key={i} className="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-full text-sm cursor-pointer transition-colors">{s}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ── APP ── */
+function App() {
+  const [currentPage, setCurrentPage] = useState("Home");
+  const renderPage = () => {
+    if (currentPage === "Home") return <Home setCurrentPage={setCurrentPage} />;
+    if (currentPage === "About") return <About />;
+    if (currentPage === "Contact") return <Contact />;
+    return <Home setCurrentPage={setCurrentPage} />;
+  };
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <main className="flex-1">{renderPage()}</main>
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
 </html>
